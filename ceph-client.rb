@@ -128,26 +128,6 @@ class CephClient < Formula
 end
 
 __END__
-diff --git a/src/auth/KeyRing.cc b/src/auth/KeyRing.cc
-index 2ddc0b4ab22..2efb8b67a3b 100644
---- a/src/auth/KeyRing.cc
-+++ b/src/auth/KeyRing.cc
-@@ -205,12 +205,12 @@ void KeyRing::decode(bufferlist::const_iterator& bl) {
-   __u8 struct_v;
-   auto start_pos = bl;
-   try {
-+    decode_plaintext(start_pos);
-+  } catch (...) {
-+    keys.clear();
-     using ceph::decode;
-     decode(struct_v, bl);
-     decode(keys, bl);
--  } catch (ceph::buffer::error& err) {
--    keys.clear();
--    decode_plaintext(start_pos);
-   }
- }
- 
 diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
 index 8dc69f0af51..0b2acaf160a 100644
 --- a/cmake/modules/Distutils.cmake
