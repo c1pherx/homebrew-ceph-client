@@ -1,13 +1,13 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "https://github.com/ceph/ceph.git", :using => :git, :revision => "0def4cf21d897bbf911614d8e3fe32e14fb30f7f"
-  version "quincy-17.0.0-4483-g0def4cf21d8"
+  url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v15.2.14", :revision => "cd3bb7e87a2f62c1b862ff3fd8b1eec13391a5be"
+  version "octopus-15.2.14"
 
-  bottle do
-    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.0.0-4483"
-    sha256 cellar: :any, big_sur: "8796c05eaa6ac5065221ff6ba1b45201776666e5702f6573b8a3f857ba890d1f"
-  end
+#  bottle do
+#    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.0.0-4483"
+#    sha256 cellar: :any, big_sur: "8796c05eaa6ac5065221ff6ba1b45201776666e5702f6573b8a3f857ba890d1f"
+#  end
 
   # depends_on "osxfuse"
   depends_on "boost" => :build
@@ -69,21 +69,13 @@ class CephClient < Formula
       -DWITH_XFS=OFF
     ]
     targets = %w[
-      rados
-      rbd
       cephfs
-      ceph-conf
       ceph-fuse
-      manpages
-      cython_rados
-      cython_rbd
     ]
     mkdir "build" do
       system "cmake", "-G", "Ninja", "..", *args, *std_cmake_args
       system "ninja", *targets
       executables = %w[
-        bin/rados
-        bin/rbd
         bin/ceph-fuse
       ]
       executables.each do |file|
@@ -95,26 +87,13 @@ class CephClient < Formula
         end
       end
       %w[
-        ceph
-        ceph-conf
         ceph-fuse
-        rados
-        rbd
       ].each do |file|
         bin.install "bin/#{file}"
       end
       %w[
         ceph-common.2
         ceph-common
-        rados.2.0.0
-        rados.2
-        rados
-        radosstriper.1.0.0
-        radosstriper.1
-        radosstriper
-        rbd.1.17.0
-        rbd.1
-        rbd
         cephfs.2.0.0
         cephfs.2
         cephfs
@@ -122,12 +101,7 @@ class CephClient < Formula
         lib.install "lib/lib#{name}.dylib"
       end
       %w[
-        ceph-conf
         ceph-fuse
-        ceph
-        librados-config
-        rados
-        rbd
       ].each do |name|
         man8.install "doc/man/#{name}.8"
       end
@@ -149,12 +123,7 @@ class CephClient < Formula
   end
 
   test do
-    system "#{bin}/ceph", "--version"
     system "#{bin}/ceph-fuse", "--version"
-    system "#{bin}/rbd", "--version"
-    system "#{bin}/rados", "--version"
-    system "python", "-c", "import rados"
-    system "python", "-c", "import rbd"
   end
 end
 
