@@ -129,28 +129,25 @@ end
 
 __END__
 diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
-index 8dc69f0af51..0b2acaf160a 100644
+index 5fe929499d3..e33c1f21725 100644
 --- a/cmake/modules/Distutils.cmake
 +++ b/cmake/modules/Distutils.cmake
-@@ -79,11 +79,9 @@ function(distutils_add_cython_module target name src)
+@@ -75,9 +75,7 @@ function(distutils_add_cython_module target name src)
      OUTPUT ${output_dir}/${name}${ext_suffix}
      COMMAND
      env
 -    CC="${PY_CC}"
-     CFLAGS="${PY_CFLAGS}"
-     CPPFLAGS="${PY_CPPFLAGS}"
      CXX="${PY_CXX}"
 -    LDSHARED="${PY_LDSHARED}"
      OPT=\"-DNDEBUG -g -fwrapv -O2 -w\"
      LDFLAGS=-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
      CYTHON_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}
-@@ -108,8 +106,6 @@ function(distutils_install_cython_module name)
-     set(CFLAG_DISABLE_VTA -fno-var-tracking-assignments)
-   endif()
+@@ -98,8 +96,6 @@ function(distutils_install_cython_module name)
+   set(PY_CC "${compiler_launcher} ${CMAKE_C_COMPILER}")
+   set(PY_LDSHARED "${link_launcher} ${CMAKE_C_COMPILER} -shared")
    install(CODE "
 -    set(ENV{CC} \"${PY_CC}\")
 -    set(ENV{LDSHARED} \"${PY_LDSHARED}\")
      set(ENV{CPPFLAGS} \"-iquote${CMAKE_SOURCE_DIR}/src/include
                          -D'void0=dead_function\(void\)' \
-                         -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0' \
-
+                         -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0'\")
